@@ -3,6 +3,14 @@ name = "hars"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "hars-core"
+path = "src/cmd/core.rs"
+
+[[bin]]
+name = "hars-manager"
+path = "src/cmd/manager.rs"
+
 [dependencies]
 clap = { version = "4.0", features = ["derive"] }
 tera = "1.18"

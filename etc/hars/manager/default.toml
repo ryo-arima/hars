@@ -1,0 +1,10 @@
+[store]
+type = "file" # file, redis
+path = "/tmp/hars" # if type is file
+
+[redis]
+host = ""
+port = 6379
+user = ""
+pass = ""
+db = 0
