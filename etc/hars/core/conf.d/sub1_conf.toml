@@ -1,0 +1,61 @@
+[global]
+user = "nginx"
+worker_processes = "auto"
+error_log = "/var/log/nginx/error.log"
+error_log_level = "warn"
+pid = "/var/run/nginx.pid"
+
+[events]
+worker_connections = 1024
+
+[http]
+include = "/etc/nginx/mime.types"
+default_type = "application/octet-stream"
+
+[log_format.main]
+format = '''
+    $remote_addr - $remote_user [$time_local] "$request"
+    $status $body_bytes_sent "$http_referer"
+    "$http_user_agent" "$http_x_forwarded_for"
+'''
+
+[access_log]
+path = "/var/log/nginx/access.log"
+format = "main"
+
+[http.options]
+sendfile = true
+keepalive_timeout = 65
+gzip = true
+
+[server]
+listen = 80
+server_name = "example.com"
+
+[server.location.root]
+path = "/"
+root = "/usr/share/nginx/html"
+index = ["index.html", "index.htm"]
+
+[server.location.api]
+path = "/api/"
+proxy_pass = "http://localhost:8080/"
+proxy_set_header_host = "$host"
+proxy_set_header_x_real_ip = "$remote_addr"
+proxy_set_header_x_forwarded_for = "$proxy_add_x_forwarded_for"
+proxy_set_header_x_forwarded_proto = "$scheme"
+
+[server.error_pages.404]
+path = "/404.html"
+root = "/usr/share/nginx/html"
+
+[server.error_pages.50x]
+path = "/50x.html"
+root = "/usr/share/nginx/html"
+
+[server.ssl]
+listen = 443
+ssl_certificate = "/etc/ssl/certs/example.com.crt"
+ssl_certificate_key = "/etc/ssl/private/example.com.key"
+ssl_protocols = ["TLSv1.2", "TLSv1.3"]
+ssl_ciphers = "HIGH:!aNULL:!MD5"

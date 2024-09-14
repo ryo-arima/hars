@@ -1,0 +1,4 @@
+[include]
+paths = [
+  "/etc/hars/core/conf.d/*.toml"
+]
